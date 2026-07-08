@@ -108,6 +108,7 @@ public class MainBuildTask implements LauncherBuildTask {
     protected void initProps(BuildContext context) {
         context.properties.clear();
         context.properties.put("launcher.address", server.config.netty.address);
+        context.properties.put("launcher.bootstrapUrl", server.config.launcherApi == null ? "" : server.config.launcherApi.launcherBootstrapUrl);
         context.properties.put("launcher.projectName", server.config.projectName);
         context.properties.put("runtimeconfig.secretKeyClient", SecurityHelper.randomStringAESKey());
         context.properties.put("launcher.port", 32148 + SecurityHelper.newRandom().nextInt(512));

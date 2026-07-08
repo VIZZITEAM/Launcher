@@ -116,7 +116,11 @@ public class RequestFeatureHttpAPIImpl implements AuthFeatureAPI, UserFeatureAPI
                     .header("X-Launcher-Update-Token", launcherVerifyToken);
         }
         return HttpHelper.sendAsync(client, builder
-                .build(), new HttpErrorHandler<>(HttpAuthData.class)).thenApply(HttpHelper.HttpOptional::getOrThrow);
+                .build(), new HttpErrorHandler<>(HttpAuthData.class)).thenApply(result -> {
+            var authData = result.getOrThrow();
+            authDataRef.set(authData);
+            return authData;
+        });
     }
 
     @Override
@@ -207,14 +211,9 @@ public class RequestFeatureHttpAPIImpl implements AuthFeatureAPI, UserFeatureAPI
 
     @Override
     public CompletableFuture<List<ClientProfile>> getProfiles() {
-        var accessToken0 = Optional.ofNullable(authDataRef.get()).map(e -> e.accessToken);
-        if(accessToken0.isEmpty()) {
-            return CompletableFuture.failedFuture(new RequestException("You are not authorized"));
-        }
         return HttpHelper.sendAsync(client, HttpRequest.newBuilder()
                         .GET()
                         .uri(URI.create(baseUrl.concat("/profile/list")))
-                        .header("Authorization", "Bearer "+accessToken0.get())
                         .header("Content-Type", "application/json")
                         .build(), new HttpErrorHandler<>(HttpListProfilesResponse.class))
                 .thenApply(e -> new ArrayList<>(e.getOrThrow().profiles()));

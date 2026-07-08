@@ -53,6 +53,8 @@ public final class LauncherConfig extends StreamObject {
     public final String runtimeEncryptKey;
     @LauncherInject("launcher.address")
     public final String address;
+    @LauncherInject("launcher.bootstrapUrl")
+    public final String bootstrapUrl;
     @LauncherInject("runtimeconfig.secretKeyClient")
     public String secretKeyClient;
     @LauncherInject("runtimeconfig.unlockSecret")
@@ -95,6 +97,7 @@ public final class LauncherConfig extends StreamObject {
             throw new IOException(e);
         }
         address = null;
+        bootstrapUrl = null;
         environment = LauncherEnvironment.STD;
         Launcher.applyLauncherEnv(environment);
         // Read signed runtime
@@ -111,6 +114,7 @@ public final class LauncherConfig extends StreamObject {
 
     public LauncherConfig(String address, ECPublicKey ecdsaPublicKey, RSAPublicKey rsaPublicKey, Map<String, byte[]> runtime, String projectName) {
         this.address = address;
+        this.bootstrapUrl = "";
         this.ecdsaPublicKey = ecdsaPublicKey;
         this.rsaPublicKey = rsaPublicKey;
         this.runtime = Map.copyOf(runtime);
@@ -126,6 +130,7 @@ public final class LauncherConfig extends StreamObject {
 
     public LauncherConfig(String address, Map<String, byte[]> runtime, String projectName, LauncherEnvironment env, LauncherTrustManager trustManager) {
         this.address = address;
+        this.bootstrapUrl = "";
         this.runtime = Map.copyOf(runtime);
         this.projectName = projectName;
         this.clientPort = 32148;

@@ -6,9 +6,12 @@ import pro.gravit.utils.helper.SecurityHelper;
 
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,8 +44,14 @@ public class LegacySessionHelper {
         if (rawPassword == null) {
             rawPassword = "";
         }
-        return SecurityHelper.toHex(SecurityHelper.digest(SecurityHelper.DigestAlgorithm.SHA256,
-                "%s.%s.%s.%s".formatted(secretSalt, username, rawPassword, secretSalt)));
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = digest.digest("%s.%s.%s.%s".formatted(secretSalt, username, rawPassword, secretSalt)
+                    .getBytes(StandardCharsets.UTF_8));
+            return SecurityHelper.toHex(bytes);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 digest is unavailable", e);
+        }
     }
 
     public record JwtTokenInfo(String username, UUID uuid) {

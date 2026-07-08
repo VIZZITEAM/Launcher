@@ -40,6 +40,7 @@ public final class LaunchServerConfig {
     public ProfilesProvider profilesProvider = new LocalProfilesProvider();
     public UpdatesProvider updatesProvider = new LocalUpdatesProvider();
     public NettyConfig netty;
+    public LauncherApiConfig launcherApi;
     public LauncherConf launcher;
     public JarSignerConf sign;
     private transient LaunchServer server = null;
@@ -65,6 +66,8 @@ public final class LaunchServerConfig {
         newConfig.netty.performance.bossThread = 2;
         newConfig.netty.performance.workerThread = 8;
         newConfig.netty.performance.schedulerThread = 2;
+
+        newConfig.launcherApi = new LauncherApiConfig();
 
         newConfig.launcher = new LauncherConf();
         newConfig.launcher.compress = true;
@@ -229,6 +232,11 @@ public final class LaunchServerConfig {
         public String metaInfSfName = "SIGNUMO.SF";
         public String signAlgo = "SHA256WITHRSA";
         public boolean checkCertificateExpired = true;
+    }
+
+    public static class LauncherApiConfig {
+        public String launcherBootstrapUrl = "";
+        public String siteApiBaseUrl = "";
     }
 
     public static class NettyUpdatesBind {
