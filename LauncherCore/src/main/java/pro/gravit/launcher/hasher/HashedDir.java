@@ -68,6 +68,24 @@ public final class HashedDir extends HashedEntry {
         map.remove(name);
     }
 
+    public void putEntry(String name, HashedEntry entry) {
+        VerifyHelper.putIfAbsent(map, IOHelper.verifyFileName(name), entry, String.format("Duplicate dir entry: '%s'", name));
+    }
+
+    public HashedDir getOrCreateDir(String name) {
+        String verifiedName = IOHelper.verifyFileName(name);
+        HashedEntry existing = map.get(verifiedName);
+        if (existing == null) {
+            HashedDir created = new HashedDir();
+            map.put(verifiedName, created);
+            return created;
+        }
+        if (existing instanceof HashedDir) {
+            return (HashedDir) existing;
+        }
+        throw new IllegalArgumentException(String.format("Entry '%s' already exists and is not a directory", verifiedName));
+    }
+
     public void removeR(String name) {
         LinkedList<String> dirs = new LinkedList<>();
         StringTokenizer t = new StringTokenizer(name, "/");
