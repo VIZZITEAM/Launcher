@@ -1,0 +1,8 @@
+{
+  "type": "siteHttp",
+  "url": "https://site.example.com/api/launcher/auth",
+  "bearerToken": "zmc-launcher-REPLACE_ME",
+  "expireSeconds": 3600,
+  "connectTimeoutMillis": 5000,
+  "requestTimeoutMillis": 10000
+}

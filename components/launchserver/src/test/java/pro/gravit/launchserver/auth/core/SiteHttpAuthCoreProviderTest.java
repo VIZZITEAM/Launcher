@@ -37,7 +37,6 @@ class SiteHttpAuthCoreProviderTest {
     void providerIsRegistered() {
         AuthCoreProvider.registerProviders();
 
-        Assertions.assertEquals(SiteHttpAuthCoreProvider.class, AuthCoreProvider.providers.getClass("alamineHttp"));
         Assertions.assertEquals(SiteHttpAuthCoreProvider.class, AuthCoreProvider.providers.getClass("siteHttp"));
     }
 

@@ -56,7 +56,6 @@ public abstract class AuthCoreProvider implements AutoCloseable, Reconfigurable 
             providers.register("merge", MergeAuthCoreProvider.class);
             providers.register("openid", OpenIDAuthCoreProvider.class);
             providers.register("sql", SQLCoreProvider.class);
-            providers.register("alamineHttp", SiteHttpAuthCoreProvider.class);
             providers.register("siteHttp", SiteHttpAuthCoreProvider.class);
             registredProviders = true;
         }

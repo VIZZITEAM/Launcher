@@ -9,6 +9,12 @@ This document describes the current Launcher, LaunchServer, LauncherRuntime, and
 - `LauncherRuntime` shows the server list before login. Playing still requires authorization.
 - The launcher contains only the base LaunchServer URL and optional site bootstrap URL. Region lists are fetched from the site.
 
+Source repositories:
+
+- `VIZZITEAM/Launcher` - LaunchServer and launcher framework.
+- `VIZZITEAM/LauncherRuntime` - JavaFX runtime UI.
+- `VIZZITEAM/ZombieMCSite` - site API and admin panel.
+
 ## LaunchServer Config
 
 Use the `siteHttp` auth core provider:
@@ -47,6 +53,12 @@ The same launcher API key is used by:
 - site admin "Launcher API key"
 
 Do not commit real keys.
+
+Example file:
+
+```text
+docs/examples/launchserver-site-http-auth.json
+```
 
 ## Auth Flow
 
