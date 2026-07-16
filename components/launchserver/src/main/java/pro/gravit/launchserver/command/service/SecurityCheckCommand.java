@@ -147,36 +147,6 @@ public class SecurityCheckCommand extends Command {
             case PROD -> printCheckResult("env", "", true);
         }
 
-        //Profiles TODO: Implement
-        /*for (ClientProfile profile : server.config.profilesProvider.getProfiles(null)) {
-            boolean bad = false;
-            String profileModuleName = "profiles.%s".formatted(profile.getTitle());
-            for (String exc : profile.getUpdateExclusions()) {
-                StringTokenizer tokenizer = new StringTokenizer(exc, "/");
-                if (exc.endsWith(".jar")) {
-                    printCheckResult(profileModuleName, "updateExclusions %s not safe. Cheats may be injected very easy!".formatted(exc), false);
-                    bad = true;
-                    continue;
-                }
-                if (tokenizer.hasMoreTokens() && tokenizer.nextToken().equals("mods")) {
-                    String nextToken = tokenizer.nextToken();
-                    if (!tokenizer.hasMoreTokens()) {
-                        if (!exc.endsWith("/")) {
-                            printCheckResult(profileModuleName, "updateExclusions %s not safe. Cheats may be injected very easy!".formatted(exc), false);
-                            bad = true;
-                        }
-                    } else {
-                        if (nextToken.equals("memory_repo") || nextToken.equals(profile.getVersion().toString())) {
-                            printCheckResult(profileModuleName, "updateExclusions %s not safe. Cheats may be injected very easy!".formatted(exc), false);
-                            bad = true;
-                        }
-                    }
-                }
-            }
-            if (!bad)
-                printCheckResult(profileModuleName, "", true);
-        }*/
-
         //Linux permissions check
         if (JVMHelper.OS_TYPE == JVMHelper.OS.LINUX) {
             try {

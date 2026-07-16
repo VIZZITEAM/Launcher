@@ -279,7 +279,6 @@ public class RequestFeatureHttpAPIImpl implements AuthFeatureAPI, UserFeatureAPI
 
     @Override
     public CompletableFuture<SecurityLevelInfo> getSecurityInfo() {
-        // TODO: Implement
         return CompletableFuture.completedFuture(new SecurityLevelInfo() {
             @Override
             public boolean isRequired() {
@@ -295,14 +294,12 @@ public class RequestFeatureHttpAPIImpl implements AuthFeatureAPI, UserFeatureAPI
 
     @Override
     public CompletableFuture<SecurityLevelVerification> privateKeyVerification(PublicKey publicKey, byte[] signature) {
-        // TODO: Implement
-        return CompletableFuture.failedFuture(new UnsupportedOperationException());
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Private key verification is not supported by the HTTP feature API"));
     }
 
     @Override
     public CompletableFuture<Void> sendHardwareInfo(HardwareStatisticData statisticData, HardwareIdentifyData identifyData) {
-        // TODO: Implement
-        return CompletableFuture.failedFuture(new UnsupportedOperationException());
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Hardware info upload is not supported by the HTTP feature API"));
     }
 
     @Override

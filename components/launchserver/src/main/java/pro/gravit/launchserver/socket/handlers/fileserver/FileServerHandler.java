@@ -6,6 +6,8 @@ import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pro.gravit.launchserver.socket.handlers.ContentType;
 import pro.gravit.utils.helper.IOHelper;
 import pro.gravit.utils.helper.VerifyHelper;
@@ -35,6 +37,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 public class FileServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
+    private static final Logger logger = LogManager.getLogger();
     public static final DateTimeFormatter dateFormatter;
     public static final String READ = "r";
     public static final int HTTP_CACHE_SECONDS = VerifyHelper.verifyInt(Integer.parseInt(System.getProperty("launcher.fileserver.cachesec", "60")), VerifyHelper.NOT_NEGATIVE, "HttpCache seconds should be positive");
@@ -282,7 +285,7 @@ public class FileServerHandler extends SimpleChannelInboundHandler<FullHttpReque
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+        logger.error("File server request failed", cause);
         if (ctx.channel().isActive()) {
             sendError(ctx, INTERNAL_SERVER_ERROR);
         }

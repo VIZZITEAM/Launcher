@@ -89,8 +89,8 @@ public class JavaHelper {
                     tryAddJava(javaPaths, result, JavaVersion.getByPath(p1));
                     trySearchJava(javaPaths, result, p1.getParent());
                 }
-            } catch (InvalidPathException | NullPointerException ignored) {
-
+            } catch (InvalidPathException | NullPointerException e) {
+                logger.debug("Skipping invalid PATH entry {}", p, e);
             } catch (IOException e) {
                 logger.error("", e);
             }
@@ -134,8 +134,8 @@ public class JavaHelper {
         Path realPath = version.jvmDir.toAbsolutePath();
         try {
             realPath = realPath.toRealPath();
-        } catch (IOException ignored) {
-
+        } catch (IOException e) {
+            logger.debug("Failed to resolve Java path {}", realPath, e);
         }
         String path = realPath.toString();
         if (javaPaths.contains(path)) return;
@@ -271,8 +271,8 @@ public class JavaHelper {
                     if(modulesProperty != null) {
                         modules = new ArrayList<>(Arrays.asList(modulesProperty.split(" ")));
                     }
-                } catch (IOException ignored) {
-
+                } catch (IOException e) {
+                    logger.debug("Failed to read Java release file {}", releaseFile, e);
                 }
             }
             if(versionAndBuild == null) {

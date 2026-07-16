@@ -1,6 +1,8 @@
 package pro.gravit.launcher.client;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pro.gravit.launcher.base.Launcher;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 public class FileConnectionCache implements ConnectionResolver.Cache {
+    private static final Logger logger = LoggerFactory.getLogger(FileConnectionCache.class);
     private static final String CACHE_FILE_PROPERTY = "launcher.connection.cacheFile";
     private final Path path;
 
@@ -75,7 +78,8 @@ public class FileConnectionCache implements ConnectionResolver.Cache {
         try (Reader reader = Files.newBufferedReader(path)) {
             CacheData data = gson().fromJson(reader, CacheData.class);
             return data == null ? new CacheData() : data.normalize();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            logger.debug("Failed to read launcher connection cache {}", path, e);
             return new CacheData();
         }
     }
@@ -92,10 +96,12 @@ public class FileConnectionCache implements ConnectionResolver.Cache {
             }
             try {
                 Files.move(temporary, path, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                logger.debug("Atomic move is not available for launcher connection cache {}, falling back to replace", path, e);
                 Files.move(temporary, path, StandardCopyOption.REPLACE_EXISTING);
             }
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            logger.debug("Failed to write launcher connection cache {}", path, e);
         }
     }
 

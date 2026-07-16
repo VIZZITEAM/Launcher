@@ -72,7 +72,9 @@ public class LoadLauncherModuleCommand extends Command {
                     String name = file.substring(0, file.length() - "_lmodule.jar".length());
                     if (name.startsWith(word)) candidates.add(new Candidate(name));
                 });
-            } catch (IOException ignored) {}
+            } catch (IOException e) {
+                logger.debug("Failed to list launcher modules directory {}", server.modulesDir, e);
+            }
             return candidates;
         }
         return new ArrayList<>();

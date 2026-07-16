@@ -110,3 +110,12 @@ cmd.sh
 project/target
 ## PVS Studio
 .PVS-Studio/
+
+## Local launcher/server artifacts
+.updates-cache
+build-secrets.json
+control-file
+modules.json
+null
+artifacts/
+*.log

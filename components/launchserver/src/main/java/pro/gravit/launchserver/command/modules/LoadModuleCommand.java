@@ -72,7 +72,9 @@ public class LoadModuleCommand extends Command {
                     String name = file.substring(0, file.length() - "_module.jar".length());
                     if (name.startsWith(word)) candidates.add(new Candidate(name));
                 });
-            } catch (IOException ignored) {}
+            } catch (IOException e) {
+                logger.debug("Failed to list modules directory {}", server.modulesDir, e);
+            }
             return candidates;
         }
         return new ArrayList<>();
